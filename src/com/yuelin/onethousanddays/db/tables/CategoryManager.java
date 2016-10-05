@@ -11,15 +11,13 @@ import com.yuelin.onethousanddays.DBUtil;
 import com.yuelin.onethousanddays.beans.Category;
 
 public class CategoryManager {
-	
+
 	public static void displayAllRows() throws SQLException {
 
 		String sql = "SELECT catId, catName FROM categories";
-		try (
-				Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
 				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql);
-				){
+				ResultSet rs = stmt.executeQuery(sql);) {
 
 			System.out.println("Categories:");
 			System.out.println("==========================");
@@ -38,10 +36,8 @@ public class CategoryManager {
 		String sql = "SELECT * FROM categories WHERE catId = ?";
 		ResultSet rs = null;
 
-		try (
-				Connection conn = DBUtil.getConnection(DBType.MYSQL);
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				){
+		try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
+				PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setInt(1, catId);
 			rs = stmt.executeQuery();
 
@@ -53,7 +49,7 @@ public class CategoryManager {
 			} else {
 				return null;
 			}
-			
+
 		} catch (SQLException e) {
 			System.err.println(e);
 			return null;
@@ -62,7 +58,6 @@ public class CategoryManager {
 				rs.close();
 			}
 		}
-
 
 	}
 }
