@@ -47,8 +47,8 @@ public class ActivityManager {
 	}
 
 	public static boolean insert(Activity bean) throws SQLException {
-		String sql = "INSERT into activities (categoryId, date, hours, description) "
-				+ "VALUES (?, ?, ?, ?)";
+		String sql = "INSERT into activities (categoryId, date, hours, description, day) "
+				+ "VALUES (?, ?, ?, ?, ?)";
 		ResultSet keys = null;
 		try (// Connection conn = DBUtil.getConnection(DBType.MYSQL);
 		PreparedStatement stmt = conn.prepareStatement(sql,
@@ -58,6 +58,7 @@ public class ActivityManager {
 			stmt.setDate(2, (Date) bean.getDate());
 			stmt.setDouble(3, bean.getHours());
 			stmt.setString(4, bean.getDescription());
+			stmt.setInt(5, (int) bean.getDay());
 			int affected = stmt.executeUpdate();
 
 			if (affected == 1) {
@@ -83,7 +84,7 @@ public class ActivityManager {
 	public static void displayAllRows() throws SQLException {
 		// String sql =
 		// "SELECT id, categoryId, date, hours, description FROM activities ORDER BY id";
-		String sql = "SELECT id, catName, date, hours, description FROM activities "
+		String sql = "SELECT id, day, catName, date, hours, description FROM activities "
 				+ "INNER JOIN categories on categoryId=catid ORDER BY id DESC LIMIT 10";
 		try (Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);) {
@@ -99,8 +100,8 @@ public class ActivityManager {
 //				bf.append(rs.getString("description"));
 //				System.out.println(bf.toString());
 				
-				System.out.format("%1$4s: %2$12s  %3$4s Hour(s)    %4$-16s %5$s\n",
-						rs.getInt("id"), rs.getDate("date"), rs.getDouble("hours"), 
+				System.out.format("%1$4s: %2$-14s Day %3$-4s %4$4s Hour(s)    %5$-16s %6$s\n",
+						rs.getInt("id"), rs.getDate("date"), rs.getInt("day"), rs.getDouble("hours"), 
 						rs.getString("catName"), rs.getString("description"));
 			}
 			System.out.println("=================================================================================");

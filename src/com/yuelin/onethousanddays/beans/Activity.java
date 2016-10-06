@@ -5,6 +5,7 @@ import java.util.Date;
 public class Activity {
 	private int id;
 	private int categoryId;
+	private long day;
 	private Date date;
 	private double hours;
 	private String description;
@@ -19,6 +20,12 @@ public class Activity {
 	}
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
+	}
+	public long getDay() {
+		return day;
+	}
+	public void setDay(long day) {
+		this.day = day;
 	}
 	public Date getDate() {
 		return date;
@@ -38,7 +45,4 @@ public class Activity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
-
 }
