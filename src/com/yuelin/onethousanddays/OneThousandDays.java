@@ -51,7 +51,6 @@ public class OneThousandDays {
 
 		java.sql.Date sqlDate;
 		if (date.equals("")) {
-			System.out.println("empty...");
 			java.util.Date utilDate = new java.util.Date();
 			sqlDate = new java.sql.Date(utilDate.getTime());
 		} else {
