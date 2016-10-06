@@ -8,7 +8,6 @@ import java.sql.Statement;
 
 import com.yuelin.onethousanddays.beans.Category;
 import com.yuelin.onethousanddays.db.ConnectionManager;
-import com.yuelin.onethousanddays.db.DBType;
 
 public class CategoryManager {
 	
@@ -17,8 +16,8 @@ public class CategoryManager {
 
 	public static void displayAllRows() throws SQLException {
 
-		String sql = "SELECT catId, catName FROM categories";
-		try (//Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		String sql = "SELECT catId, catName FROM categories ORDER BY catid";
+		try (
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);) {
 

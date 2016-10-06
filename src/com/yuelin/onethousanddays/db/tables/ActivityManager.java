@@ -79,4 +79,31 @@ public class ActivityManager {
 		return true;
 
 	}
+
+	public static void displayAllRows() throws SQLException {
+		// String sql =
+		// "SELECT id, categoryId, date, hours, description FROM activities ORDER BY id";
+		String sql = "SELECT id, catName, date, hours, description FROM activities "
+				+ "INNER JOIN categories on categoryId=catid ORDER BY id DESC LIMIT 10";
+		try (Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);) {
+
+			System.out.println("Activities:");
+			System.out.println("=================================================================================");
+			while (rs.next()) {
+//				StringBuffer bf = new StringBuffer();
+//				bf.append(rs.getInt("id") + ":\t");
+//				bf.append(rs.getDate("date") + "\t");
+//				bf.append(rs.getDouble("hours") + " hour(s)\t");
+//				bf.append(rs.getString("catName") + "\t");
+//				bf.append(rs.getString("description"));
+//				System.out.println(bf.toString());
+				
+				System.out.format("%1$4s: %2$12s  %3$4s Hour(s)    %4$-16s %5$s\n",
+						rs.getInt("id"), rs.getDate("date"), rs.getDouble("hours"), 
+						rs.getString("catName"), rs.getString("description"));
+			}
+			System.out.println("=================================================================================");
+		}
+	}
 }

@@ -4,18 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionManager
-{
+public class ConnectionManager {
 	private static ConnectionManager instance = null;
 
 	private final String USERNAME = "dbuser";
 	private final String PASSWORD = "dbpassword";
-	private final String H_CONN_STRING =
-			"jdbc:hsqldb:data/onethousanddays";
-	private final String M_CONN_STRING =
-			"jdbc:mysql://localhost/onethousanddays";
+	private final String H_CONN_STRING = "jdbc:hsqldb:data/onethousanddays";
+	private final String M_CONN_STRING = "jdbc:mysql://localhost/onethousanddays?useUnicode=true&characterEncoding=utf-8";
+	private final String M_DEV_CONN_STRING = "jdbc:mysql://localhost/onethousanddays_dev?useUnicode=true&characterEncoding=utf-8";
 
 	private DBType dbType = DBType.MYSQL;
+	private boolean devDB = false;
 
 	private Connection conn = null;
 
@@ -33,32 +32,39 @@ public class ConnectionManager
 		this.dbType = dbType;
 	}
 
-	private boolean openConnection()
-	{
+	public void setDevDB(boolean dev) {
+		this.devDB = dev;
+	}
+
+	private boolean openConnection() {
 		try {
 			switch (dbType) {
 
 			case MYSQL:
-				conn = DriverManager.getConnection(M_CONN_STRING, USERNAME, PASSWORD);
+				if (devDB)
+					conn = DriverManager.getConnection(M_DEV_CONN_STRING, USERNAME,
+							PASSWORD);
+				else
+					conn = DriverManager.getConnection(M_CONN_STRING, USERNAME,
+							PASSWORD);
 				return true;
 
 			case HSQLDB:
-				conn = DriverManager.getConnection(H_CONN_STRING, USERNAME, PASSWORD);
+				conn = DriverManager.getConnection(H_CONN_STRING, USERNAME,
+						PASSWORD);
 				return true;
 
-			default: 
+			default:
 				return false;
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.err.println(e);
 			return false;
 		}
 
 	}
 
-	public Connection getConnection()
-	{
+	public Connection getConnection() {
 		if (conn == null) {
 			if (openConnection()) {
 				System.out.println("Connection opened");
