@@ -7,19 +7,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.yuelin.onethousanddays.DBType;
-import com.yuelin.onethousanddays.DBUtil;
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.Category;
+import com.yuelin.onethousanddays.db.ConnectionManager;
 
 public class ActivityManager {
+	private static Connection conn = ConnectionManager.getInstance()
+			.getConnection();
+
 	public static Category getRow(int catId) throws SQLException {
 
 		String sql = "SELECT * FROM categories WHERE catId = ?";
 		ResultSet rs = null;
 
-		try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
-				PreparedStatement stmt = conn.prepareStatement(sql);) {
+		try (
+		// Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setInt(1, catId);
 			rs = stmt.executeQuery();
 
@@ -43,15 +46,13 @@ public class ActivityManager {
 
 	}
 
-
-
 	public static boolean insert(Activity bean) throws SQLException {
 		String sql = "INSERT into activities (categoryId, date, hours, description) "
 				+ "VALUES (?, ?, ?, ?)";
 		ResultSet keys = null;
-		try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
-				PreparedStatement stmt = conn.prepareStatement(sql,
-						Statement.RETURN_GENERATED_KEYS);) {
+		try (// Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		PreparedStatement stmt = conn.prepareStatement(sql,
+				Statement.RETURN_GENERATED_KEYS);) {
 
 			stmt.setInt(1, bean.getCategoryId());
 			stmt.setDate(2, (Date) bean.getDate());
@@ -68,8 +69,7 @@ public class ActivityManager {
 				System.err.println("No rows affected");
 				return false;
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.err.println(e);
 			return false;
 		} finally {
@@ -77,6 +77,6 @@ public class ActivityManager {
 				keys.close();
 		}
 		return true;
-		
+
 	}
 }

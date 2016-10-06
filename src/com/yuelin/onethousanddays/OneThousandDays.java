@@ -1,10 +1,10 @@
 package com.yuelin.onethousanddays;
 
 import java.sql.SQLException;
-import java.util.Date;
-
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.Category;
+import com.yuelin.onethousanddays.db.ConnectionManager;
+import com.yuelin.onethousanddays.db.DBType;
 import com.yuelin.onethousanddays.db.tables.ActivityManager;
 import com.yuelin.onethousanddays.db.tables.CategoryManager;
 import com.yuelin.onethousanddays.util.InputHelper;
@@ -21,9 +21,7 @@ public class OneThousandDays {
 		
 		
 		
-//	    System.out.println("utilDate:" + utilDate);
-//	    System.out.println("sqlDate:" + sqlDate);
-//	    System.exit(0);
+		ConnectionManager.getInstance().setDBType(DBType.MYSQL);
 		
 		CategoryManager.displayAllRows();
 		category = InputHelper.getIntInput("Please select a category: ");
@@ -47,6 +45,6 @@ public class OneThousandDays {
 		activity.setDescription(description);
 		
 		ActivityManager.insert(activity);
-		
+		ConnectionManager.getInstance().close();
 	}
 }

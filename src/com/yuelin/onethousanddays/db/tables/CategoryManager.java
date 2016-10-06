@@ -6,16 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.yuelin.onethousanddays.DBType;
-import com.yuelin.onethousanddays.DBUtil;
 import com.yuelin.onethousanddays.beans.Category;
+import com.yuelin.onethousanddays.db.ConnectionManager;
+import com.yuelin.onethousanddays.db.DBType;
 
 public class CategoryManager {
+	
+	private static Connection conn = ConnectionManager.getInstance()
+			.getConnection();
 
 	public static void displayAllRows() throws SQLException {
 
 		String sql = "SELECT catId, catName FROM categories";
-		try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		try (//Connection conn = DBUtil.getConnection(DBType.MYSQL);
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);) {
 
@@ -36,7 +39,7 @@ public class CategoryManager {
 		String sql = "SELECT * FROM categories WHERE catId = ?";
 		ResultSet rs = null;
 
-		try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		try (//Connection conn = DBUtil.getConnection(DBType.MYSQL);
 				PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setInt(1, catId);
 			rs = stmt.executeQuery();
