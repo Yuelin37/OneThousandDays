@@ -7,10 +7,13 @@ import java.util.Date;
 
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.Category;
+import com.yuelin.onethousanddays.beans.Quote;
 import com.yuelin.onethousanddays.db.ConnectionManager;
 import com.yuelin.onethousanddays.db.DBType;
+import com.yuelin.onethousanddays.db.QuotesDBConnectionManager;
 import com.yuelin.onethousanddays.db.tables.ActivityManager;
 import com.yuelin.onethousanddays.db.tables.CategoryManager;
+import com.yuelin.onethousanddays.db.tables.QuoteManager;
 import com.yuelin.onethousanddays.util.InputHelper;
 
 public class OneThousandDays {
@@ -31,16 +34,28 @@ public class OneThousandDays {
 		if (args.length > 0 && args[0].equals("--dev"))
 			dev = true;
 
-		ConnectionManager.getInstance().setDevDB(dev);
+		System.out.println("=================================================================");
+		System.out.println("A Random Qutoe For You:");
 
-		System.out.println("Welcome To One Thousand Days!\n");
+		QuotesDBConnectionManager.getInstance().setDevDB(dev);
+		QuotesDBConnectionManager.getInstance().setDBType(DBType.MYSQL);
+		Quote quote = new Quote();
+		quote = QuoteManager.getRandomQuote();
+		System.out.println(quote.getQuote());
+		if (quote.getAuthor() != null)
+			System.out.println("--- " + quote.getAuthor());
+		QuotesDBConnectionManager.getInstance().close();
+		System.out.println("=================================================================");
+
+		System.out.println("\nWelcome To One Thousand Days!");
 
 		java.util.Date today = new java.util.Date();
 
 		day = getDayCount(FIRSTDAY, simpleDateFormat.format(today)) + 1;
-		System.out.println("Today is " + simpleDateFormat.format(today) + ". And it's Day " + day
-				+ ".\n");
+		System.out.println("Today is " + simpleDateFormat.format(today)
+				+ ". And it's Day " + day + ".\n");
 
+		ConnectionManager.getInstance().setDevDB(dev);
 		ConnectionManager.getInstance().setDBType(DBType.MYSQL);
 
 		CategoryManager.displayAllRows();
