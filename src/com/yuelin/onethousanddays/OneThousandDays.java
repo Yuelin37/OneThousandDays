@@ -3,6 +3,7 @@ package com.yuelin.onethousanddays;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.yuelin.onethousanddays.beans.Activity;
@@ -34,7 +35,8 @@ public class OneThousandDays {
 		if (args.length > 0 && args[0].equals("--dev"))
 			dev = true;
 
-		System.out.println("=================================================================");
+		System.out
+				.println("=================================================================");
 		System.out.println("A Random Qutoe For You:");
 
 		QuotesDBConnectionManager.getInstance().setDevDB(dev);
@@ -45,7 +47,8 @@ public class OneThousandDays {
 		if (quote.getAuthor() != null)
 			System.out.println("--- " + quote.getAuthor());
 		QuotesDBConnectionManager.getInstance().close();
-		System.out.println("=================================================================");
+		System.out
+				.println("=================================================================");
 
 		System.out.println("\nWelcome To One Thousand Days!");
 
@@ -58,6 +61,7 @@ public class OneThousandDays {
 		ConnectionManager.getInstance().setDevDB(dev);
 		ConnectionManager.getInstance().setDBType(DBType.MYSQL);
 
+		ActivityManager.displayHoursSummary(day);
 		CategoryManager.displayAllRows();
 		category = InputHelper.getIntInput("Please select a category:\n");
 
@@ -75,21 +79,28 @@ public class OneThousandDays {
 		description = InputHelper
 				.getInput("Please enter your description for this activity.\n");
 
+		int dayOfWeek = 0;
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		java.util.Date utilDate;
 		java.sql.Date sqlDate;
-		if (date.equals("")) {
-			java.util.Date utilDate = new java.util.Date();
-			sqlDate = new java.sql.Date(utilDate.getTime());
-		} else {
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-			java.util.Date parsed = format.parse(date);
-			sqlDate = new java.sql.Date(parsed.getTime());
-			day = getDayCount(FIRSTDAY, date) + 1;
-		}
+		if (date.equals(""))
+			date = format.format(today);
 
+		utilDate = format.parse(date);
+		sqlDate = new java.sql.Date(utilDate.getTime());
+		day = getDayCount(FIRSTDAY, date) + 1;
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(utilDate);
+		dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		
+
+		
 		Activity activity = new Activity();
 		activity.setDay(day);
 		activity.setCategoryId(category);
 		activity.setDate(sqlDate);
+		activity.setDayOfWeek(dayOfWeek);
 		activity.setHours(hours);
 		activity.setDescription(description);
 

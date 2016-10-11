@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.DayOfWeek;
 
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.Category;
@@ -47,8 +48,8 @@ public class ActivityManager {
 	}
 
 	public static boolean insert(Activity bean) throws SQLException {
-		String sql = "INSERT into activities (categoryId, date, hours, description, day) "
-				+ "VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT into activities (categoryId, date, dayOfWeek, hours, description, day) "
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		ResultSet keys = null;
 		try (// Connection conn = DBUtil.getConnection(DBType.MYSQL);
 		PreparedStatement stmt = conn.prepareStatement(sql,
@@ -56,9 +57,10 @@ public class ActivityManager {
 
 			stmt.setInt(1, bean.getCategoryId());
 			stmt.setDate(2, (Date) bean.getDate());
-			stmt.setDouble(3, bean.getHours());
-			stmt.setString(4, bean.getDescription());
-			stmt.setInt(5, (int) bean.getDay());
+			stmt.setInt(3, bean.getDayOfWeek());
+			stmt.setDouble(4, bean.getHours());
+			stmt.setString(5, bean.getDescription());
+			stmt.setInt(6, (int) bean.getDay());
 			int affected = stmt.executeUpdate();
 
 			if (affected == 1) {
@@ -84,27 +86,55 @@ public class ActivityManager {
 	public static void displayAllRows() throws SQLException {
 		// String sql =
 		// "SELECT id, categoryId, date, hours, description FROM activities ORDER BY id";
-		String sql = "SELECT id, day, catName, date, hours, description FROM activities "
+		String sql = "SELECT id, day, catName, date, dayOfWeek, hours, description FROM activities "
 				+ "INNER JOIN categories on categoryId=catid ORDER BY id DESC LIMIT 10";
 		try (Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);) {
 
 			System.out.println("Activities:");
-			System.out.println("=================================================================================");
+			System.out
+					.println("==========================================================================================");
+			System.out.format(
+					"%1$4s: %2$-13s %3$-13s %4$-9s %5$-11s    %6$-16s %7$s\n",
+					"ID", "Date", "Weekday", "Day", "Hours", "Category",
+					"Descritpion");
+			System.out
+					.println(" --------------------------------------------------------------------------------------- ");
 			while (rs.next()) {
-//				StringBuffer bf = new StringBuffer();
-//				bf.append(rs.getInt("id") + ":\t");
-//				bf.append(rs.getDate("date") + "\t");
-//				bf.append(rs.getDouble("hours") + " hour(s)\t");
-//				bf.append(rs.getString("catName") + "\t");
-//				bf.append(rs.getString("description"));
-//				System.out.println(bf.toString());
-				
-				System.out.format("%1$4s: %2$-14s Day %3$-4s %4$4s Hour(s)    %5$-16s %6$s\n",
-						rs.getInt("id"), rs.getDate("date"), rs.getInt("day"), rs.getDouble("hours"), 
-						rs.getString("catName"), rs.getString("description"));
+				// StringBuffer bf = new StringBuffer();
+				// bf.append(rs.getInt("id") + ":\t");
+				// bf.append(rs.getDate("date") + "\t");
+				// bf.append(rs.getDouble("hours") + " hour(s)\t");
+				// bf.append(rs.getString("catName") + "\t");
+				// bf.append(rs.getString("description"));
+				// System.out.println(bf.toString());
+
+				System.out
+						.format("%1$4s: %2$-13s %3$-13s Day %4$-4s %5$4s Hour(s)    %6$-16s %7$s\n",
+								rs.getInt("id"),
+								rs.getDate("date"),
+								DayOfWeek.SUNDAY.plus(rs.getInt("dayOfWeek") - 1),
+								rs.getInt("day"), rs.getDouble("hours"), rs
+										.getString("catName"), rs
+										.getString("description"));
 			}
-			System.out.println("=================================================================================");
+			System.out
+					.println("==========================================================================================");
+		}
+	}
+
+	public static void displayHoursSummary(long day) throws SQLException {
+		String sql = "select categoryId, catName, sum(hours) as totalHours from activities "
+				+ "inner join categories on categoryId = categories.catId group by categoryId";
+
+		try (Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);) {
+			System.out.println("Hours Summary:");
+			while (rs.next()) {
+				System.out.format("%1$-12s: %2$-4s Hours | %3$-4.2f Hours/Day\n",
+						rs.getString("catName"), rs.getDouble("totalHours"),
+						rs.getDouble("totalHours") / day);
+			}
 		}
 	}
 }

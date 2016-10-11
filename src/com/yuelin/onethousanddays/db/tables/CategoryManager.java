@@ -38,7 +38,7 @@ public class CategoryManager {
 		String sql = "SELECT * FROM categories WHERE catId = ?";
 		ResultSet rs = null;
 
-		try (//Connection conn = DBUtil.getConnection(DBType.MYSQL);
+		try (
 				PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setInt(1, catId);
 			rs = stmt.executeQuery();

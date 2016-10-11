@@ -7,6 +7,7 @@ public class Activity {
 	private int categoryId;
 	private long day;
 	private Date date;
+	private int dayOfWeek;
 	private double hours;
 	private String description;
 	public int getId() {
@@ -32,6 +33,12 @@ public class Activity {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public int getDayOfWeek(){
+		return dayOfWeek;
+	}
+	public void setDayOfWeek(int dayOfWeek){
+		this.dayOfWeek = dayOfWeek;
 	}
 	public double getHours() {
 		return hours;
