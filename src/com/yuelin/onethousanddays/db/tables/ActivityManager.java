@@ -127,8 +127,7 @@ public class ActivityManager {
 				Activity activity = new Activity();
 				activity.setId(rs.getInt("id"));
 				activity.setDate(rs.getDate("date"));
-				// activity.setDayOfWeek(DayOfWeek.SUNDAY.plus(rs.getInt("dayOfWeek")
-				// - 1));
+				activity.setDayOfWeekEnumValue(DayOfWeek.SUNDAY.plus(rs.getInt("dayOfWeek") - 1));
 				activity.setDay(rs.getInt("day"));
 				activity.setHours(rs.getDouble("hours"));
 				activity.setCategoryName(rs.getString("catName"));

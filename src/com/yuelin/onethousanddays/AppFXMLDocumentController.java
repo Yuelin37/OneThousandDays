@@ -2,16 +2,15 @@ package com.yuelin.onethousanddays;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.ActivitySummary;
-import com.yuelin.onethousanddays.beans.Category;
 import com.yuelin.onethousanddays.beans.Quote;
 import com.yuelin.onethousanddays.db.tables.ActivityManager;
 import com.yuelin.onethousanddays.db.tables.CategoryManager;
@@ -44,10 +43,11 @@ public class AppFXMLDocumentController implements Initializable {
 	private int categoryId = 0;
 	private java.sql.Date sqlDate;
 	private String description;
+	private int dayOfWeek = 0;
 
 	@FXML
 	private TextArea lblQuote;
-	
+
 	@FXML
 	private TextField hoursTF;
 
@@ -59,10 +59,10 @@ public class AppFXMLDocumentController implements Initializable {
 
 	@FXML
 	private DatePicker datePicker;
-	
+
 	@FXML
 	private ComboBox<String> categoryCB;
-	
+
 	@FXML
 	private TextArea txtAreaDescription;
 
@@ -73,35 +73,39 @@ public class AppFXMLDocumentController implements Initializable {
 
 	@FXML
 	private void selectDate() {
-		
+
 		sqlDate = java.sql.Date.valueOf(datePicker.getValue());
-		System.out.println(sqlDate);
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(sqlDate);
+		dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 	}
-	
+
 	@FXML
-	private void selectCategory(){
+	private void selectCategory() {
 		categoryId = CategoryManager.getId(categoryCB.getValue());
 	}
-	
+
 	@FXML
-	private void logHours(){
+	private void logHours() {
 		getHours();
 		getDescritpion();
-		
+
 		Activity activity = new Activity();
 		activity.setCategoryId(categoryId);
 		activity.setDate(sqlDate);
 		activity.setDay(day);
+		activity.setDayOfWeek(dayOfWeek);
 		activity.setHours(hours);
 		activity.setDescription(description);
-		
+
 		try {
 			ActivityManager.insert(activity);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		updateActivitySummary();
 		updateActivityDetails();
 	}
@@ -115,8 +119,8 @@ public class AppFXMLDocumentController implements Initializable {
 		updateCategoryCB();
 		datePicker.setValue(LocalDate.now());
 	}
-	
-	public void updateCategoryCB(){
+
+	public void updateCategoryCB() {
 		String[] categories = CategoryManager.getCategories().toArray(new String[0]);
 		categoryCB.getItems().addAll(categories);
 	}
@@ -124,7 +128,7 @@ public class AppFXMLDocumentController implements Initializable {
 	public void updateRandomQuote() {
 		try {
 			Quote quote = new Quote();
-			quote = getQuote();
+			quote = QuoteManager.getRandomQuote();
 			if (quote.getAuthor() != null)
 				lblQuote.setText(quote.getQuote() + "\n--- " + quote.getAuthor());
 			else
@@ -135,22 +139,10 @@ public class AppFXMLDocumentController implements Initializable {
 		}
 	}
 
-	public Quote getQuote() throws SQLException {
-		Quote quote = new Quote();
-
-		quote = QuoteManager.getRandomQuote();
-
-		System.out.println(quote.getQuote());
-		if (quote.getAuthor() != null)
-			System.out.println("--- " + quote.getAuthor());
-		return quote;
-
-	}
 
 	public void updateActivitySummary() {
 
 		ArrayList<ActivitySummary> activitySummary = ActivityManager.getActivitySummary(day);
-		System.out.println(activitySummary.toArray().length);
 		ObservableList<ActivitySummary> activityList = FXCollections.observableArrayList(activitySummary);
 		tvActivitySummary.setItems(activityList);
 		tvActivitySummary.getColumns().clear();
@@ -188,6 +180,10 @@ public class AppFXMLDocumentController implements Initializable {
 		date.setCellValueFactory(new PropertyValueFactory<>("date"));
 		tvActivityDetails.getColumns().add(date);
 
+		TableColumn<Activity, String> dayOfWeekEnumValue = new TableColumn<>("Day Of Week");
+		dayOfWeekEnumValue.setCellValueFactory(new PropertyValueFactory<>("dayOfWeekEnumValue"));
+		tvActivityDetails.getColumns().add(dayOfWeekEnumValue);
+		
 		TableColumn<Activity, String> day = new TableColumn<>("Day");
 		day.setCellValueFactory(new PropertyValueFactory<>("day"));
 		tvActivityDetails.getColumns().add(day);
@@ -208,13 +204,13 @@ public class AppFXMLDocumentController implements Initializable {
 		// tvActivityDetails.setPrefHeight(100);
 
 	}
-	
+
 	@FXML
-	public void getHours(){
+	public void getHours() {
 		hours = Double.parseDouble(hoursTF.getText());
 	}
-	
-	public void getDescritpion(){
+
+	public void getDescritpion() {
 		description = txtAreaDescription.getText();
 	}
 
