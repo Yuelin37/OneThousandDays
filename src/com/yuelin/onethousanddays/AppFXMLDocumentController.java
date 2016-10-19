@@ -139,7 +139,6 @@ public class AppFXMLDocumentController implements Initializable {
 		}
 	}
 
-
 	public void updateActivitySummary() {
 
 		ArrayList<ActivitySummary> activitySummary = ActivityManager.getActivitySummary(day);
@@ -158,50 +157,48 @@ public class AppFXMLDocumentController implements Initializable {
 		TableColumn<ActivitySummary, String> averageHours = new TableColumn<>("Hours/Day");
 		averageHours.setCellValueFactory(new PropertyValueFactory<>("averageHours"));
 		tvActivitySummary.getColumns().add(averageHours);
-		tvActivitySummary.setPrefWidth(300);
+		
+		
+		tvActivitySummary.setPrefWidth(287);
 		tvActivitySummary.setPrefHeight(100);
 
-		System.out.println("TableView Testing...");
 	}
 
 	public void updateActivityDetails() {
 
 		ArrayList<Activity> activits = ActivityManager.getAllRows();
-		System.out.println(activits.toArray().length);
 		ObservableList<Activity> activityList = FXCollections.observableArrayList(activits);
 		tvActivityDetails.setItems(activityList);
 		tvActivityDetails.getColumns().clear();
 
 		TableColumn<Activity, String> id = new TableColumn<>("ID");
 		id.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tvActivityDetails.getColumns().add(id);
 
 		TableColumn<Activity, String> date = new TableColumn<>("Date");
 		date.setCellValueFactory(new PropertyValueFactory<>("date"));
-		tvActivityDetails.getColumns().add(date);
 
 		TableColumn<Activity, String> dayOfWeekEnumValue = new TableColumn<>("Day Of Week");
 		dayOfWeekEnumValue.setCellValueFactory(new PropertyValueFactory<>("dayOfWeekEnumValue"));
-		tvActivityDetails.getColumns().add(dayOfWeekEnumValue);
-		
+
 		TableColumn<Activity, String> day = new TableColumn<>("Day");
 		day.setCellValueFactory(new PropertyValueFactory<>("day"));
-		tvActivityDetails.getColumns().add(day);
 
 		TableColumn<Activity, String> hours = new TableColumn<>("Hours");
 		hours.setCellValueFactory(new PropertyValueFactory<>("hours"));
-		tvActivityDetails.getColumns().add(hours);
 
 		TableColumn<Activity, String> categoryName = new TableColumn<>("Category");
 		categoryName.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
-		tvActivityDetails.getColumns().add(categoryName);
 
 		TableColumn<Activity, String> description = new TableColumn<>("Description");
 		description.setCellValueFactory(new PropertyValueFactory<>("description"));
-		tvActivityDetails.getColumns().add(description);
 
-		// tvActivityDetails.setPrefWidth(300);
-		// tvActivityDetails.setPrefHeight(100);
+		tvActivityDetails.getColumns().add(id);
+		tvActivityDetails.getColumns().add(date);
+		tvActivityDetails.getColumns().add(dayOfWeekEnumValue);
+		tvActivityDetails.getColumns().add(day);
+		tvActivityDetails.getColumns().add(hours);
+		tvActivityDetails.getColumns().add(categoryName);
+		tvActivityDetails.getColumns().add(description);
 
 	}
 
