@@ -10,6 +10,10 @@ public class Activity {
 	private int dayOfWeek;
 	private double hours;
 	private String description;
+	
+	// categoryName is not part of activities table
+	private String categoryName;
+	
 	public int getId() {
 		return id;
 	}
@@ -52,4 +56,12 @@ public class Activity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	
+	
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="988.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.AppFXMLDocumentController">
+	<children>
+		<MenuBar VBox.vgrow="NEVER">
+			<menus>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem mnemonicParsing="false" text="New" />
+						<MenuItem mnemonicParsing="false" text="Open…" />
+						<Menu mnemonicParsing="false" text="Open Recent" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" text="Close" />
+						<MenuItem mnemonicParsing="false" text="Save" />
+						<MenuItem mnemonicParsing="false" text="Save As…" />
+						<MenuItem mnemonicParsing="false" text="Revert" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" text="Preferences…" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" text="Quit" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Edit">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Undo" />
+						<MenuItem mnemonicParsing="false" text="Redo" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" text="Cut" />
+						<MenuItem mnemonicParsing="false" text="Copy" />
+						<MenuItem mnemonicParsing="false" text="Paste" />
+						<MenuItem mnemonicParsing="false" text="Delete" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem mnemonicParsing="false" text="Select All" />
+						<MenuItem mnemonicParsing="false" text="Unselect All" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="672.0" prefWidth="788.0" VBox.vgrow="ALWAYS">
+			<children>
+				<Button layoutX="468.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleButtonAction" styleClass="pure-button" stylesheets="@buttons.css" text="New Quote" />
+				<TextArea fx:id="lblQuote" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="79.0" prefWidth="444.0" wrapText="true">
+				</TextArea>
+            <TableView fx:id="tvActivitySummary" layoutX="14.0" layoutY="122.0" prefHeight="114.0" prefWidth="444.0">
+              <columns>
+                
+              </columns>
+            </TableView>
+            <TableView fx:id="tvActivityDetails" layoutX="15.0" layoutY="388.0" prefHeight="548.0" prefWidth="655.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+            <DatePicker fx:id="datePicker" layoutX="14.0" layoutY="265.0" onAction="#selectDate" showWeekNumbers="true" />
+            <ComboBox fx:id="categoryCB" layoutX="236.0" layoutY="265.0" onAction="#selectCategory" prefWidth="150.0" promptText="Category" />
+            <Button fx:id="btnLogHours" layoutX="612.0" layoutY="265.0" mnemonicParsing="false" onAction="#logHours" text="Log Hours" />
+            <TextField fx:id="hoursTF" layoutX="420.0" layoutY="265.0" onAction="#getHours" promptText="Hours" />
+            <TextArea fx:id="txtAreaDescription" layoutX="15.0" layoutY="300.0" prefHeight="79.0" prefWidth="567.0" promptText="Description" />
+			</children>
+		</AnchorPane>
+	</children>
+</VBox>
