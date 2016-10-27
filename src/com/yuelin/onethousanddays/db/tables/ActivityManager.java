@@ -122,7 +122,7 @@ public class ActivityManager {
 		String sql = "SELECT id, day, catName, date, dayOfWeek, hours, description FROM activities "
 				+ "INNER JOIN categories on categoryId=catid ORDER BY id DESC";
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
-
+			
 			while (rs.next()) {
 				Activity activity = new Activity();
 				activity.setId(rs.getInt("id"));
@@ -138,6 +138,32 @@ public class ActivityManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return activities;
+	}
+	
+	public static ArrayList<Activity> getActivitiesForDate(String date) {
+		ArrayList<Activity> activities = new ArrayList<Activity>();
+		String sql = "SELECT id, day, catName, date, dayOfWeek, hours, description FROM activities "
+				+ "INNER JOIN categories on categoryId=catid WHERE date <= ? order by day";
+		try (PreparedStatement stmt = conn.prepareStatement(sql); ) {
+			stmt.setString(1,date);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Activity activity = new Activity();
+				activity.setId(rs.getInt("id"));
+				activity.setDate(rs.getDate("date"));
+				activity.setDayOfWeekEnumValue(DayOfWeek.SUNDAY.plus(rs.getInt("dayOfWeek") - 1));
+				activity.setDay(rs.getInt("day"));
+				activity.setHours(rs.getDouble("hours"));
+				activity.setCategoryName(rs.getString("catName"));
+				activity.setDescription(rs.getString("description"));
+				activities.add(activity);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		System.out.println(activities.size());
 		return activities;
 	}
 

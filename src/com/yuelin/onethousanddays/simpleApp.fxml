@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import java.lang.*?>
@@ -9,7 +11,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="1107.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.AppFXMLDocumentController">
+<VBox prefHeight="1250.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.AppFXMLDocumentController">
 	<children>
 		<MenuBar VBox.vgrow="NEVER">
 			<menus>
@@ -52,33 +54,50 @@
 		</MenuBar>
 		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="1071.0" prefWidth="773.0" VBox.vgrow="ALWAYS">
 			<children>
-				<Button layoutX="468.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleButtonAction" styleClass="pure-button" stylesheets="@buttons.css" text="New Quote" />
-				<TextArea fx:id="lblQuote" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="79.0" prefWidth="444.0" wrapText="true">
-				</TextArea>
-            <TableView fx:id="tvActivitySummary" layoutX="14.0" layoutY="122.0" prefHeight="114.0" prefWidth="444.0">
+            <Label fx:id="lblDay" alignment="TOP_RIGHT" layoutX="500.0" layoutY="14.0" onMouseClicked="#updateRandomQuote" prefHeight="87.0" prefWidth="178.0" text="100" textFill="#0bbf23" AnchorPane.rightAnchor="14.0">
+               <font>
+                  <Font name="Open 24 Display St" size="64.0" />
+               </font></Label>
+            <TableView fx:id="tvActivitySummary" layoutX="14.0" layoutY="131.0" prefHeight="100.0" prefWidth="287.0" AnchorPane.topAnchor="141.0">
               <columns>
                 
               </columns>
             </TableView>
-            <TableView fx:id="tvActivityDetails" layoutX="15.0" layoutY="470.0" prefHeight="548.0" prefWidth="655.0">
+            <TableView fx:id="tvActivityDetails" layoutX="15.0" layoutY="515.0" opacity="0.0" prefHeight="548.0" prefWidth="655.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="470.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
                 <TableColumn prefWidth="75.0" text="C2" />
               </columns>
             </TableView>
-            <TitledPane animated="false" collapsible="false" layoutX="15.0" layoutY="244.0" prefHeight="207.0" prefWidth="655.0" text="Log New Hours">
+            <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="253.0" prefHeight="207.0" prefWidth="598.0" text="Log New Hours" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="253.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="616.0">
                      <children>
-                        <DatePicker fx:id="datePicker" layoutX="14.0" layoutY="17.0" onAction="#selectDate" showWeekNumbers="true" />
-                        <ComboBox fx:id="categoryCB" layoutX="222.0" layoutY="17.0" onAction="#selectCategory" prefWidth="150.0" promptText="Category" />
-                        <TextField fx:id="hoursTF" layoutX="399.0" layoutY="18.0" onAction="#getHours" promptText="Hours" />
-                        <TextArea fx:id="txtAreaDescription" layoutX="14.0" layoutY="58.0" prefHeight="79.0" prefWidth="567.0" promptText="Description" />
-                        <Button fx:id="btnLogHours" layoutX="532.0" layoutY="141.0" mnemonicParsing="false" onAction="#logHours" text="Log Hours" />
+                        <DatePicker fx:id="datePicker" layoutX="14.0" layoutY="17.0" onAction="#selectDate" showWeekNumbers="true" AnchorPane.leftAnchor="14.0" />
+                        <ComboBox fx:id="categoryCB" layoutX="247.0" layoutY="18.0" onAction="#selectCategory" prefWidth="150.0" promptText="Category" />
+                        <TextField fx:id="hoursTF" layoutX="409.0" layoutY="18.0" onAction="#getHours" promptText="Hours" AnchorPane.rightAnchor="14.0" />
+                        <Button fx:id="btnLogHoursabc" layoutX="491.0" layoutY="147.0" mnemonicParsing="false" onAction="#logHours" styleClass="pure-button-primary" stylesheets="@buttons.css" text="Log Hours" />
+                        <TextArea fx:id="txtAreaDescription" layoutX="24.0" layoutY="59.0" prefHeight="76.0" prefWidth="547.0" promptText="Descritpion" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
                      </children>
                   </AnchorPane>
               </content>
             </TitledPane>
+            <StackPane layoutX="14.0" layoutY="101.0" prefHeight="20.0" prefWidth="287.0" AnchorPane.leftAnchor="14.0">
+               <children>
+                  <ProgressBar fx:id="progressBar" layoutX="471.0" layoutY="101.0" prefHeight="20.0" prefWidth="661.0" progress="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <Label fx:id="lblPercentage" text="Label" StackPane.alignment="CENTER" />
+               </children>
+            </StackPane>
+            <Label fx:id="lblRandomQuote" alignment="TOP_LEFT" layoutX="15.0" layoutY="14.0" onMouseClicked="#updateRandomQuote" prefHeight="76.0" prefWidth="525.0" text="Quote Text Lable" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="146.0" AnchorPane.topAnchor="14.0" />
+            <StackedBarChart fx:id="hoursBarChart" layoutX="61.0" layoutY="499.0">
+              <xAxis>
+                <CategoryAxis label="Date" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis label="Hours" side="LEFT" />
+              </yAxis>
+            </StackedBarChart>
+            <ProgressIndicator fx:id="progressIndicator" layoutX="526.0" layoutY="133.0" prefHeight="95.0" prefWidth="88.0" progress="0.0" />
 			</children>
 		</AnchorPane>
 	</children>

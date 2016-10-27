@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.ActivitySummary;
@@ -21,13 +22,24 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.converter.DoubleStringConverter;
 
 /**
  *
@@ -37,6 +49,7 @@ public class AppFXMLDocumentController implements Initializable {
 
 	private static final String FIRSTDAY = "10/05/2016";
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	private static SimpleDateFormat simpleDateFormatYMD = new SimpleDateFormat("yyyy-MM-dd");
 	static long day = 0;
 	java.util.Date today = new java.util.Date();
 	private double hours = 0;
@@ -46,10 +59,22 @@ public class AppFXMLDocumentController implements Initializable {
 	private int dayOfWeek = 0;
 
 	@FXML
-	private TextArea lblQuote;
+	private Label lblDay;
+
+	@FXML
+	private Label lblRandomQuote;
 
 	@FXML
 	private TextField hoursTF;
+
+	@FXML
+	private ProgressBar progressBar;
+
+	@FXML
+	private ProgressIndicator progressIndicator;
+
+	@FXML
+	private Label lblPercentage;
 
 	@FXML
 	private TableView<ActivitySummary> tvActivitySummary;
@@ -65,6 +90,9 @@ public class AppFXMLDocumentController implements Initializable {
 
 	@FXML
 	private TextArea txtAreaDescription;
+
+	@FXML
+	private StackedBarChart<String, Number> hoursBarChart;
 
 	@FXML
 	private void handleButtonAction(ActionEvent event) {
@@ -88,8 +116,27 @@ public class AppFXMLDocumentController implements Initializable {
 
 	@FXML
 	private void logHours() {
+		selectDate();
 		getHours();
 		getDescritpion();
+		getDay();
+
+		if (categoryId == 0) {
+			Alert alert = new Alert(AlertType.WARNING, "Please select a category you want to log hours for.");
+			alert.showAndWait().ifPresent(response -> {
+			});
+			return;
+		}
+
+		if (hours == 0) {
+			Alert alert = new Alert(AlertType.WARNING, "Please enter hours you want to log.");
+			alert.showAndWait().ifPresent(response -> {
+				// if (response == ButtonType.OK) {
+				// System.out.println("WARNING...");
+				// }
+			});
+			return;
+		}
 
 		Activity activity = new Activity();
 		activity.setCategoryId(categoryId);
@@ -108,16 +155,79 @@ public class AppFXMLDocumentController implements Initializable {
 
 		updateActivitySummary();
 		updateActivityDetails();
+		updateHoursBarChart();
+	}
+
+	private void getDay() {
+		// System.out.println(datePicker.getValue().toString());
+		day = getDayCount(FIRSTDAY, simpleDateFormat.format(java.sql.Date.valueOf(datePicker.getValue()))) + 1;
+
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		day = getDayCount(FIRSTDAY, simpleDateFormat.format(today)) + 1;
+		lblDay.setText(Long.toString(day));
+
+		double progress = day / 1000.00;
+		progressBar.setProgress(progress);
+		lblPercentage.setText(String.valueOf(progress * 100) + "%");
+		progressIndicator.setProgress(0.015);
 		updateRandomQuote();
 		updateActivitySummary();
 		updateActivityDetails();
 		updateCategoryCB();
 		datePicker.setValue(LocalDate.now());
+
+		Pattern validDoubleText = Pattern.compile("-?((\\d*)|(\\d+\\.\\d*))");
+
+		TextFormatter<Double> textFormatter = new TextFormatter<Double>(new DoubleStringConverter(), 0.0, change -> {
+			String newText = change.getControlNewText();
+			if (validDoubleText.matcher(newText).matches()) {
+				return change;
+			} else
+				return null;
+		});
+
+		hoursTF.setTextFormatter(textFormatter);
+		// hoursTF.setText("");
+
+		updateHoursBarChart();
+
+	}
+
+	private void updateHoursBarChart() {
+		CategoryAxis xAxis = new CategoryAxis();
+		NumberAxis yAxis = new NumberAxis();
+
+		hoursBarChart.setAnimated(false);
+		hoursBarChart.getData().clear();
+		hoursBarChart.setTitle("Hours Summary");
+		// xAxis.setLabel("Date");
+		yAxis.setLabel("Hours");
+		// System.out.println(datePicker.getValue().toString());
+		// System.out.println(simpleDateFormatYMD.format(today));
+
+		ArrayList<String> dates = new ArrayList<String>();
+		for (String category : CategoryManager.getCategories()) {
+			XYChart.Series<String, Number> series = new XYChart.Series<>();
+			series.setName(category);
+
+			ArrayList<Activity> activities = ActivityManager.getActivitiesForDate(simpleDateFormatYMD.format(today));
+			for (Activity activity : activities) {
+				if (dates.indexOf(activity.getDate().toString()) < 0) {
+					dates.add(activity.getDate().toString());
+				}
+				if (activity.getCategoryName().equals(category))
+					series.getData().add(new XYChart.Data<>(activity.getDate().toString(), activity.getHours()));
+				else
+					series.getData().add(new XYChart.Data<>(activity.getDate().toString(), 0.0));
+			}
+
+			hoursBarChart.getData().add(series);
+		}
+
+		xAxis.setCategories(FXCollections.<String>observableArrayList(dates));
 	}
 
 	public void updateCategoryCB() {
@@ -129,10 +239,11 @@ public class AppFXMLDocumentController implements Initializable {
 		try {
 			Quote quote = new Quote();
 			quote = QuoteManager.getRandomQuote();
-			if (quote.getAuthor() != null)
-				lblQuote.setText(quote.getQuote() + "\n--- " + quote.getAuthor());
-			else
-				lblQuote.setText(quote.getQuote());
+			if (quote.getAuthor() != null) {
+				lblRandomQuote.setText(quote.getQuote() + "\n--- " + quote.getAuthor());
+			} else {
+				lblRandomQuote.setText(quote.getQuote());
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -157,10 +268,9 @@ public class AppFXMLDocumentController implements Initializable {
 		TableColumn<ActivitySummary, String> averageHours = new TableColumn<>("Hours/Day");
 		averageHours.setCellValueFactory(new PropertyValueFactory<>("averageHours"));
 		tvActivitySummary.getColumns().add(averageHours);
-		
-		
-		tvActivitySummary.setPrefWidth(287);
-		tvActivitySummary.setPrefHeight(100);
+
+		// tvActivitySummary.setPrefWidth(287);
+		// tvActivitySummary.setPrefHeight(100);
 
 	}
 
@@ -191,6 +301,7 @@ public class AppFXMLDocumentController implements Initializable {
 
 		TableColumn<Activity, String> description = new TableColumn<>("Description");
 		description.setCellValueFactory(new PropertyValueFactory<>("description"));
+		description.prefWidthProperty().bind(tvActivityDetails.widthProperty().multiply(0.5));
 
 		tvActivityDetails.getColumns().add(id);
 		tvActivityDetails.getColumns().add(date);
@@ -204,7 +315,11 @@ public class AppFXMLDocumentController implements Initializable {
 
 	@FXML
 	public void getHours() {
-		hours = Double.parseDouble(hoursTF.getText());
+		try {
+			hours = Double.parseDouble(hoursTF.getText());
+		} catch (Exception e) {
+		}
+
 	}
 
 	public void getDescritpion() {

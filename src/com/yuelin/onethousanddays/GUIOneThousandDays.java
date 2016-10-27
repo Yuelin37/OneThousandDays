@@ -118,7 +118,7 @@ public class GUIOneThousandDays extends Application {
         root.getChildren().addAll(lblQuote, btnNewQuote, btn);
         
         Parent root1 = FXMLLoader.load(getClass().getResource("simpleApp.fxml"));
-        Scene scene = new Scene(root1, 800, 1000);
+        Scene scene = new Scene(root1, 650, 1000);
         
         primaryStage.setTitle("One Thousand Days");
         primaryStage.setScene(scene);
@@ -147,10 +147,7 @@ public class GUIOneThousandDays extends Application {
     	Quote quote = new Quote();
     
 		quote = QuoteManager.getRandomQuote();
-		
-		System.out.println(quote.getQuote());
-		if (quote.getAuthor() != null)
-			System.out.println("--- " + quote.getAuthor());			
+				
 		return quote;
 		
     }
