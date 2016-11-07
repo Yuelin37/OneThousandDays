@@ -49,7 +49,7 @@ public class GUIOneThousandDays extends Application {
         title.setFill(Paint.valueOf("#2A5058"));
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         
-        VBox root = new VBox();
+//        VBox root = new VBox();
         
 //        root.setAlignment(Pos.CENTER);
         
@@ -112,16 +112,12 @@ public class GUIOneThousandDays extends Application {
              });
         
         
-        root.getChildren().add(title);
-        root.getChildren().add(lvColleges);
-        root.getChildren().add(response);
-        root.getChildren().addAll(lblQuote, btnNewQuote, btn);
-        
         Parent root1 = FXMLLoader.load(getClass().getResource("simpleApp.fxml"));
-        Scene scene = new Scene(root1, 650, 1000);
+        Scene scene = new Scene(root1, 1350, 800);
         
         primaryStage.setTitle("One Thousand Days");
         primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
     

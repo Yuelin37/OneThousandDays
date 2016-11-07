@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="1250.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.AppFXMLDocumentController">
+<VBox fx:id="root" prefHeight="800.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.AppFXMLDocumentController">
 	<children>
 		<MenuBar VBox.vgrow="NEVER">
 			<menus>
@@ -52,53 +53,79 @@
 				</Menu>
 			</menus>
 		</MenuBar>
-		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="1071.0" prefWidth="773.0" VBox.vgrow="ALWAYS">
-			<children>
-            <Label fx:id="lblDay" alignment="TOP_RIGHT" layoutX="500.0" layoutY="14.0" onMouseClicked="#updateRandomQuote" prefHeight="87.0" prefWidth="178.0" text="100" textFill="#0bbf23" AnchorPane.rightAnchor="14.0">
-               <font>
-                  <Font name="Open 24 Display St" size="64.0" />
-               </font></Label>
-            <TableView fx:id="tvActivitySummary" layoutX="14.0" layoutY="131.0" prefHeight="100.0" prefWidth="287.0" AnchorPane.topAnchor="141.0">
-              <columns>
-                
-              </columns>
-            </TableView>
-            <TableView fx:id="tvActivityDetails" layoutX="15.0" layoutY="515.0" opacity="0.0" prefHeight="548.0" prefWidth="655.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="470.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-            <TitledPane animated="false" collapsible="false" layoutX="14.0" layoutY="253.0" prefHeight="207.0" prefWidth="598.0" text="Log New Hours" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="253.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="616.0">
+      <StackPane>
+         <children>
+      		<AnchorPane fx:id="anchorpane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="1071.0" prefWidth="773.0">
+      			<children>
+                  <HBox layoutX="15.0" layoutY="14.0" prefHeight="100.0" prefWidth="618.0" spacing="15.0">
                      <children>
-                        <DatePicker fx:id="datePicker" layoutX="14.0" layoutY="17.0" onAction="#selectDate" showWeekNumbers="true" AnchorPane.leftAnchor="14.0" />
-                        <ComboBox fx:id="categoryCB" layoutX="247.0" layoutY="18.0" onAction="#selectCategory" prefWidth="150.0" promptText="Category" />
-                        <TextField fx:id="hoursTF" layoutX="409.0" layoutY="18.0" onAction="#getHours" promptText="Hours" AnchorPane.rightAnchor="14.0" />
-                        <Button fx:id="btnLogHoursabc" layoutX="491.0" layoutY="147.0" mnemonicParsing="false" onAction="#logHours" styleClass="pure-button-primary" stylesheets="@buttons.css" text="Log Hours" />
-                        <TextArea fx:id="txtAreaDescription" layoutX="24.0" layoutY="59.0" prefHeight="76.0" prefWidth="547.0" promptText="Descritpion" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                        <Label fx:id="lblDay" alignment="CENTER" focusTraversable="false" onMouseClicked="#updateRandomQuote" prefHeight="100.0" prefWidth="123.0" style="-fx-border-width: 3; -fx-border-style: solid; -fx-border-color: grey; -fx-border-radius: 5;" text="100" textFill="#0bbf23">
+                           <font>
+                              <Font name="Open 24 Display St" size="72.0" />
+                           </font>
+                           <effect>
+                              <Glow />
+                           </effect>
+                        </Label>
+                        <StackPane prefHeight="100.0" prefWidth="107.0">
+                           <children>
+                              <ProgressBar fx:id="progressBar" layoutX="471.0" layoutY="101.0" prefHeight="100.0" prefWidth="101.0" progress="0.0" rotate="-90.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                              <Label fx:id="lblPercentage" focusTraversable="false" text="Label" StackPane.alignment="CENTER" />
+                           </children>
+                        </StackPane>
+                        <TableView fx:id="tvActivitySummary" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="287.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                           <HBox.margin>
+                              <Insets top="3.0" />
+                           </HBox.margin>
+                        </TableView>
                      </children>
-                  </AnchorPane>
-              </content>
-            </TitledPane>
-            <StackPane layoutX="14.0" layoutY="101.0" prefHeight="20.0" prefWidth="287.0" AnchorPane.leftAnchor="14.0">
-               <children>
-                  <ProgressBar fx:id="progressBar" layoutX="471.0" layoutY="101.0" prefHeight="20.0" prefWidth="661.0" progress="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-                  <Label fx:id="lblPercentage" text="Label" StackPane.alignment="CENTER" />
-               </children>
-            </StackPane>
-            <Label fx:id="lblRandomQuote" alignment="TOP_LEFT" layoutX="15.0" layoutY="14.0" onMouseClicked="#updateRandomQuote" prefHeight="76.0" prefWidth="525.0" text="Quote Text Lable" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="146.0" AnchorPane.topAnchor="14.0" />
-            <StackedBarChart fx:id="hoursBarChart" layoutX="61.0" layoutY="499.0">
-              <xAxis>
-                <CategoryAxis label="Date" side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis label="Hours" side="LEFT" />
-              </yAxis>
-            </StackedBarChart>
-            <ProgressIndicator fx:id="progressIndicator" layoutX="526.0" layoutY="133.0" prefHeight="95.0" prefWidth="88.0" progress="0.0" />
-			</children>
-		</AnchorPane>
+                  </HBox>
+                  <TableView fx:id="tvActivityDetails" focusTraversable="false" layoutX="648.0" layoutY="14.0" prefHeight="659.0" prefWidth="688.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="645.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+                  <VBox layoutX="15.0" layoutY="134.0" prefHeight="538.0" prefWidth="618.0" spacing="15.0">
+                     <children>
+                        <Label fx:id="lblRandomQuote" alignment="TOP_LEFT" onMouseClicked="#updateRandomQuote" prefHeight="76.0" prefWidth="639.0" style="-fx-border-style: solid; -fx-border-color: grey; -fx-border-width: 3; -fx-border-radius: 5;" text="Quote Text Lable" wrapText="true">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <TitledPane animated="false" collapsible="false" prefHeight="207.0" prefWidth="598.0" text="Log New Hours">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="616.0">
+                                 <children>
+                                    <DatePicker fx:id="datePicker" layoutX="34.4" layoutY="17.0" onAction="#selectDate" prefHeight="26.0" prefWidth="138.0" showWeekNumbers="true" AnchorPane.leftAnchor="14.0" />
+                                    <ComboBox fx:id="categoryCB" layoutX="192.0" layoutY="18.0" onAction="#selectCategory" prefWidth="150.0" promptText="Category" />
+                                    <TextField fx:id="hoursTF" layoutX="339.4000000000002" layoutY="18.0" onAction="#getHours" promptText="Hours" AnchorPane.rightAnchor="69.0" />
+                                    <Button fx:id="btnLogHoursabc" layoutX="292.60000000000036" layoutY="146.0" mnemonicParsing="false" onAction="#logHours" stylesheets="@buttons.css" text="Log Hours" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="133.0" />
+                                    <TextArea fx:id="txtAreaDescription" layoutX="24.0" layoutY="59.0" prefHeight="76.0" prefWidth="547.0" promptText="Descritpion" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                                    <Button fx:id="stopwatchBtn" layoutX="564.0" layoutY="18.0" mnemonicParsing="false" onAction="#showStopwatch" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </TitledPane>
+                        <StackedBarChart fx:id="hoursBarChart" prefHeight="231.0" prefWidth="618.0">
+                          <xAxis>
+                            <CategoryAxis label="Date" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Hours" side="LEFT" />
+                          </yAxis>
+                        </StackedBarChart>
+                     </children>
+                  </VBox>
+                  <Group fx:id="stopwatchgroup" />
+      			</children>
+      		</AnchorPane>
+            <StackPane fx:id="stopwatchPane" prefHeight="800.0" prefWidth="1350.0" />
+         </children>
+      </StackPane>
 	</children>
 </VBox>

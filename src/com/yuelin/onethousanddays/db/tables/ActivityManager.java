@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.ActivitySummary;
@@ -122,7 +124,7 @@ public class ActivityManager {
 		String sql = "SELECT id, day, catName, date, dayOfWeek, hours, description FROM activities "
 				+ "INNER JOIN categories on categoryId=catid ORDER BY id DESC";
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
-			
+
 			while (rs.next()) {
 				Activity activity = new Activity();
 				activity.setId(rs.getInt("id"));
@@ -140,13 +142,33 @@ public class ActivityManager {
 		}
 		return activities;
 	}
-	
-	public static ArrayList<Activity> getActivitiesForDate(String date) {
+
+	public static ArrayList<Activity> getActivitiesForDate(java.util.Date date, int days) {
+		SimpleDateFormat simpleDateFormatYMD = new SimpleDateFormat("yyyy-MM-dd");
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		String startDate = simpleDateFormatYMD.format(date);
+		c.add(Calendar.DATE, -days);
+		String endDate = simpleDateFormatYMD.format(c.getTime());
+
 		ArrayList<Activity> activities = new ArrayList<Activity>();
+		
+		for (int i = 0; i < days; i++) {
+			c.add(Calendar.DATE, 1);
+			Activity activity = new Activity();
+			activity.setDate(new java.sql.Date(c.getTime().getTime()));
+			activity.setCategoryName("English");
+			activity.setHours(0);
+			activities.add(activity);
+		}
+		
+		
 		String sql = "SELECT id, day, catName, date, dayOfWeek, hours, description FROM activities "
-				+ "INNER JOIN categories on categoryId=catid WHERE date <= ? order by day";
-		try (PreparedStatement stmt = conn.prepareStatement(sql); ) {
-			stmt.setString(1,date);
+				+ "INNER JOIN categories on categoryId=catid WHERE date <= ? and date > ? order by day";
+		try (PreparedStatement stmt = conn.prepareStatement(sql);) {
+			stmt.setString(1, startDate);
+			stmt.setString(2, endDate);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Activity activity = new Activity();
@@ -163,7 +185,7 @@ public class ActivityManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		System.out.println(activities.size());
+		
 		return activities;
 	}
 

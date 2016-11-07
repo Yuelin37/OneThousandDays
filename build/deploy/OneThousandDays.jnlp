@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="OneThousandDays.jnlp">
+  <information>
+    <title>OneThousandDays</title>
+    <vendor>Yuelin</vendor>
+    <description>OneThousandDays</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="OneThousandDays.jar" size="384590" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="0" height="0" main-class="com.yuelin.onethousanddays.GUIOneThousandDays"  name="OneThousandDays" />
+  <update check="background"/>
+</jnlp>
