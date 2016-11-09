@@ -89,6 +89,9 @@
                       <TableColumn prefWidth="75.0" text="C1" />
                       <TableColumn prefWidth="75.0" text="C2" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                   <VBox layoutX="15.0" layoutY="134.0" prefHeight="538.0" prefWidth="618.0" spacing="15.0">
                      <children>
@@ -124,7 +127,7 @@
                   <Group fx:id="stopwatchgroup" />
       			</children>
       		</AnchorPane>
-            <StackPane fx:id="stopwatchPane" prefHeight="800.0" prefWidth="1350.0" />
+            <StackPane fx:id="stopwatchPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="320.0" prefWidth="320.0" />
          </children>
       </StackPane>
 	</children>

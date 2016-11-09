@@ -83,10 +83,10 @@ public class AppFXMLDocumentController implements Initializable {
 	private int dayOfWeek = 0;
 
 	private Watch watch;
-	
+
 	@FXML
 	private Group stopwatchgroup;
-	
+
 	@FXML
 	private AnchorPane anchorpane;
 
@@ -224,7 +224,7 @@ public class AppFXMLDocumentController implements Initializable {
 			e.printStackTrace();
 		}
 		firstDay = properties.getProperty("FirstDay");
-		
+
 		firstDay = "10/05/2016";
 		lblRandomQuote.setText(firstDay);
 
@@ -251,9 +251,8 @@ public class AppFXMLDocumentController implements Initializable {
 				return null;
 		});
 
-		
 		URL location = AppFXMLDocumentController.class.getProtectionDomain().getCodeSource().getLocation();
-        System.out.println(location.getFile());
+		System.out.println(location.getFile());
 
 		Image imageDecline = new Image(
 				AppFXMLDocumentController.class.getResourceAsStream("resources/stopwatch_icon.png"));
@@ -353,10 +352,7 @@ public class AppFXMLDocumentController implements Initializable {
 		hoursBarChart.setAnimated(false);
 		hoursBarChart.getData().clear();
 		hoursBarChart.setTitle("Hours Summary");
-		// xAxis.setLabel("Date");
 		yAxis.setLabel("Hours");
-		// System.out.println(datePicker.getValue().toString());
-		// System.out.println(simpleDateFormatYMD.format(today));
 
 		ArrayList<String> dates = new ArrayList<String>();
 		for (String category : CategoryManager.getCategories()) {
@@ -419,9 +415,6 @@ public class AppFXMLDocumentController implements Initializable {
 		TableColumn<ActivitySummary, String> averageHours = new TableColumn<>("Hours/Day");
 		averageHours.setCellValueFactory(new PropertyValueFactory<>("averageHours"));
 		tvActivitySummary.getColumns().add(averageHours);
-
-		// tvActivitySummary.setPrefWidth(287);
-		// tvActivitySummary.setPrefHeight(100);
 
 	}
 
@@ -503,15 +496,6 @@ public class AppFXMLDocumentController implements Initializable {
 	@FXML
 	public void showStopwatch() {
 		stopwatchPane.setVisible(true);
-//		Stage stage = (Stage) root.getScene().getWindow();
-//		stopwatchgroup.layoutXProperty().unbind();
-//		System.out.println(anchorpane.getWidth());
-//		stopwatchgroup.layoutXProperty().bind(anchorpane.widthProperty().divide(2));
-//		stopwatchPane.setLayoutY(-100);
-//		System.out.println(stopwatchPane.layoutXProperty().isBound());
-//		stopwatchPane.layoutXProperty().bind(root.widthProperty().subtract(stopwatchPane.prefWidth(-1)).divide(2));
-//		stopwatchPane.setLayoutX(stage.getWidth() / 2 - stopwatchPane.getWidth() / 2);
-//		stopwatchPane.setLayoutY(stage.getHeight() / 2 - stopwatchPane.getHeight() / 2 - 50);
 	}
 
 }

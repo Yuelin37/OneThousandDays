@@ -89,7 +89,7 @@
 		</fx:resources>
 	
 		<fx:application id="fxApplication"
-			name="OneThousandDays"
+			name="One Thousand Days"
 			mainClass="com.yuelin.onethousanddays.GUIOneThousandDays"
 			version="1.0"
 		/>
