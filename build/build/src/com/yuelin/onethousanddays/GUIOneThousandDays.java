@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GUIOneThousandDays extends Application {
+	
+	public double hours = 0;
 
 	@Override
 	public void start(Stage primaryStage) throws SQLException, IOException {
@@ -22,7 +24,7 @@ public class GUIOneThousandDays extends Application {
 		QuotesDBConnectionManager.getInstance().setDBType(DBType.MYSQL);
 
 
-		Parent root = FXMLLoader.load(getClass().getResource("simpleApp.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("view/MainApp.fxml"));
 		Scene scene = new Scene(root, 1350, 800);
 
 		primaryStage.setTitle("One Thousand Days");
