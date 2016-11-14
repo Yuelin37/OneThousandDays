@@ -53,7 +53,7 @@ public class CategoryManager {
 
 	public static ArrayList<String> getCategories() {
 
-		String sql = "SELECT catId, catName FROM categories ORDER BY catid";
+		String sql = "SELECT catId, catName FROM categories ORDER BY catName";
 		ArrayList<String> categories = new ArrayList<String>();
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
 

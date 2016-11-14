@@ -120,8 +120,7 @@
                                     <TextField fx:id="hoursTF" layoutX="339.4000000000002" layoutY="18.0" onAction="#getHours" promptText="Hours" AnchorPane.rightAnchor="69.0" />
                                     <Button fx:id="btnLogHoursabc" layoutX="292.60000000000036" layoutY="146.0" mnemonicParsing="false" onAction="#logHours" text="Log Hours" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="133.0" />
                                     <TextArea fx:id="txtAreaDescription" layoutX="24.0" layoutY="59.0" prefHeight="76.0" prefWidth="547.0" promptText="Descritpion" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-                                    <Button fx:id="stopwatchBtn" layoutX="564.0" layoutY="18.0" mnemonicParsing="false" onAction="#showStopwatch" />
-                                    <Button layoutX="441.0" layoutY="143.0" mnemonicParsing="false" onAction="#showStopWatchDialog" text="Button" />
+                                    <Button fx:id="stopwatchBtn" layoutX="564.0" layoutY="18.0" mnemonicParsing="false" onAction="#showStopWatchDialog" />
                                  </children>
                               </AnchorPane>
                           </content>
@@ -139,7 +138,6 @@
                   <Group fx:id="stopwatchgroup" />
       			</children>
       		</AnchorPane>
-            <StackPane fx:id="stopwatchPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="320.0" prefWidth="320.0" />
          </children>
       </StackPane>
 	</children>

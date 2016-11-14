@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
-
 import com.yuelin.onethousanddays.GUIOneThousandDays;
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.ActivitySummary;
@@ -86,7 +85,6 @@ public class MainAppController implements Initializable {
 	private java.sql.Date sqlDate;
 	private String description;
 	private int dayOfWeek = 0;
-
 
 	@FXML
 	private Group stopwatchgroup;
@@ -207,7 +205,6 @@ public class MainAppController implements Initializable {
 	}
 
 	private void getDay() {
-		// System.out.println(datePicker.getValue().toString());
 		day = getDayCount(firstDay, simpleDateFormat.format(java.sql.Date.valueOf(datePicker.getValue()))) + 1;
 
 	}
@@ -255,10 +252,10 @@ public class MainAppController implements Initializable {
 				return null;
 		});
 
-		URL location = MainAppController.class.getProtectionDomain().getCodeSource().getLocation();
-		System.out.println(location.getFile());
+		// URL location =
+		// MainAppController.class.getProtectionDomain().getCodeSource().getLocation();
+		// System.out.println(location.getFile());
 
-		
 		Image imageDecline = new Image(getClass().getResourceAsStream("resources/stopwatch_icon.png"));
 		ImageView im = new ImageView(imageDecline);
 		im.setFitWidth(20);
@@ -266,11 +263,9 @@ public class MainAppController implements Initializable {
 		stopwatchBtn.setGraphic(im);
 
 		hoursTF.setTextFormatter(textFormatter);
-		// hoursTF.setText("5.555");
 
 		updateHoursBarChart();
 
-		
 	}
 
 	private void setFirstDay() {
@@ -351,9 +346,6 @@ public class MainAppController implements Initializable {
 				}
 				if (activity.getCategoryName().equals(category))
 					series.getData().add(new XYChart.Data<>(activity.getDate().toString(), activity.getHours()));
-				// else
-				// series.getData().add(new
-				// XYChart.Data<>(activity.getDate().toString(), 0.0));
 			}
 
 			hoursBarChart.getData().add(series);
@@ -457,8 +449,8 @@ public class MainAppController implements Initializable {
 		}
 
 	}
-	
-	public void setHours(String hours){
+
+	public void setHours(String hours) {
 		hoursTF.setText(hours);
 	}
 

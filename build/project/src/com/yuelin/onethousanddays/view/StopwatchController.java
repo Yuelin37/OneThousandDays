@@ -2,10 +2,7 @@ package com.yuelin.onethousanddays.view;
 
 import java.text.DecimalFormat;
 
-import com.yuelin.onethousanddays.GUIOneThousandDays;
-
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -62,9 +59,6 @@ public class StopwatchController {
 				
 				DecimalFormat df = new DecimalFormat("#.##");
 				hours = watch.getTime();
-				System.out.println("From StopwatchController...");
-				System.out.println(hours);
-				System.out.println("==========================\n");
 				hours = Math.round(hours * 100) / 100.00;
 				mainApp.setHours(df.format(hours));
 				watch.startStop();

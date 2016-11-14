@@ -59,9 +59,6 @@ public class StopwatchController {
 				
 				DecimalFormat df = new DecimalFormat("#.##");
 				hours = watch.getTime();
-				System.out.println("From StopwatchController...");
-				System.out.println(hours);
-				System.out.println("==========================\n");
 				hours = Math.round(hours * 100) / 100.00;
 				mainApp.setHours(df.format(hours));
 				watch.startStop();

@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +19,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
-
 import com.yuelin.onethousanddays.GUIOneThousandDays;
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.ActivitySummary;
@@ -71,7 +68,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
-import stopwatch.Watch;
 
 /**
  *
@@ -89,8 +85,6 @@ public class MainAppController implements Initializable {
 	private java.sql.Date sqlDate;
 	private String description;
 	private int dayOfWeek = 0;
-
-	private Watch watch;
 
 	@FXML
 	private Group stopwatchgroup;
@@ -211,7 +205,6 @@ public class MainAppController implements Initializable {
 	}
 
 	private void getDay() {
-		// System.out.println(datePicker.getValue().toString());
 		day = getDayCount(firstDay, simpleDateFormat.format(java.sql.Date.valueOf(datePicker.getValue()))) + 1;
 
 	}
@@ -259,32 +252,10 @@ public class MainAppController implements Initializable {
 				return null;
 		});
 
-		URL location = MainAppController.class.getProtectionDomain().getCodeSource().getLocation();
-//		System.out.println(location.getFile());
-//		try {
-//			System.out.println(location.toURI().toString());
-//		} catch (URISyntaxException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// URL location =
+		// MainAppController.class.getProtectionDomain().getCodeSource().getLocation();
+		// System.out.println(location.getFile());
 
-//		Image imageDecline = new Image(MainAppController.class.getResourceAsStream("../resources/stopwatch_icon.png"));
-//		System.out.println(getClass().getResource("../resources/stopwatch_icon.png"));
-//		System.out.println(MainAppController.class.getResource("../resources/stopwatch_icon.png"));
-		URL url1 = getClass().getResource("resources/stopwatch_icon.png"); 
-//		try {
-//			InputStream name = url1.openStream();
-////			Image imageDecline = new Image(getClass().getResourceAsStream("../resources/stopwatch_icon.png"));
-//			Image imageDecline = new Image(name);
-//			ImageView im = new ImageView(imageDecline);
-//			im.setFitWidth(20);
-//			im.setFitHeight(20);
-//			stopwatchBtn.setGraphic(im);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-		
 		Image imageDecline = new Image(getClass().getResourceAsStream("resources/stopwatch_icon.png"));
 		ImageView im = new ImageView(imageDecline);
 		im.setFitWidth(20);
@@ -292,30 +263,9 @@ public class MainAppController implements Initializable {
 		stopwatchBtn.setGraphic(im);
 
 		hoursTF.setTextFormatter(textFormatter);
-		// hoursTF.setText("5.555");
 
 		updateHoursBarChart();
 
-		watch = new Watch();
-		watch.setLayoutX(1);
-		watch.setLayoutY(10);
-		stopwatchPane.setVisible(false);
-		stopwatchPane.getChildren().add(watch);
-		stopwatchPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0.5, 0.0, 0.0);"
-				+ "-fx-background-color: null;"); // Shadow effect
-
-		stopwatchPane.setOnMouseClicked(event -> {
-			if (event.getClickCount() == 2) {
-				stopwatchPane.setVisible(false);
-				DecimalFormat df = new DecimalFormat("#.##");
-				hours = watch.getTime();
-				hours = Math.round(hours * 100) / 100.00;
-				hoursTF.setText(df.format(hours));
-				watch.startStop();
-				watch.hardReset();
-			}
-
-		});
 	}
 
 	private void setFirstDay() {
@@ -396,9 +346,6 @@ public class MainAppController implements Initializable {
 				}
 				if (activity.getCategoryName().equals(category))
 					series.getData().add(new XYChart.Data<>(activity.getDate().toString(), activity.getHours()));
-				// else
-				// series.getData().add(new
-				// XYChart.Data<>(activity.getDate().toString(), 0.0));
 			}
 
 			hoursBarChart.getData().add(series);
@@ -502,8 +449,8 @@ public class MainAppController implements Initializable {
 		}
 
 	}
-	
-	public void setHours(String hours){
+
+	public void setHours(String hours) {
 		hoursTF.setText(hours);
 	}
 
