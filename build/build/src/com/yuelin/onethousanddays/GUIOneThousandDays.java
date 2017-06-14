@@ -26,11 +26,13 @@ public class GUIOneThousandDays extends Application {
 	public void start(Stage primaryStage) throws SQLException, IOException {
 
 		Parent root = FXMLLoader.load(getClass().getResource("view/MainApp.fxml"));
-		Scene scene = new Scene(root, 1350, 800);
+		Scene scene = new Scene(root, 648, 800);
 
 		primaryStage.setTitle("One Thousand Days");
 		primaryStage.setScene(scene);
-		primaryStage.centerOnScreen();
+//		primaryStage.centerOnScreen();
+		primaryStage.setX(50);
+		primaryStage.setY(50);
 		primaryStage.show();
 	}
 
@@ -47,7 +49,7 @@ public class GUIOneThousandDays extends Application {
 	static boolean dev = false;
 
 	public static void main(String[] args) {
-		logger.error("Starting...");
+		logger.trace("Starting...");
 		if (args.length > 0 && args[0].equals("--dev"))
 			dev = true;
 

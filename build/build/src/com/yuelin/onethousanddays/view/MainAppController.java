@@ -19,6 +19,9 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
+import org.controlsfx.control.ToggleSwitch;
+
 import com.yuelin.onethousanddays.GUIOneThousandDays;
 import com.yuelin.onethousanddays.beans.Activity;
 import com.yuelin.onethousanddays.beans.ActivitySummary;
@@ -29,12 +32,14 @@ import com.yuelin.onethousanddays.db.tables.QuoteManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -49,15 +54,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -85,6 +93,8 @@ public class MainAppController implements Initializable {
 	private java.sql.Date sqlDate;
 	private String description;
 	private int dayOfWeek = 0;
+
+	private ArrayList<Activity> activities;
 
 	@FXML
 	private Group stopwatchgroup;
@@ -129,10 +139,19 @@ public class MainAppController implements Initializable {
 	private TextArea txtAreaDescription;
 
 	@FXML
+	private Pagination pagination;
+
+	@FXML
 	private StackedBarChart<String, Number> hoursBarChart;
 
 	@FXML
 	private StackPane stopwatchPane;
+
+	@FXML
+	private ToggleButton toggleswitch1;
+	
+	@FXML
+	private ToggleSwitch toggleswitch;
 
 	@FXML
 	private void handleButtonAction(ActionEvent event) {
@@ -265,7 +284,31 @@ public class MainAppController implements Initializable {
 		hoursTF.setTextFormatter(textFormatter);
 
 		updateHoursBarChart();
+		pagination.setVisible(false);
+		toggleswitch.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if (toggleswitch.isSelected()) {
+					pagination.setVisible(true);
+					root.getScene().getWindow().setWidth(1350);
+					// root.getScene().getWindow().setWidth(root.getScene().getWindow().getWidth()
+					// + 700);
+				} else {
+					// toggleswitch.setText("Bad");
+					pagination.setVisible(false);
+					root.getScene().getWindow().setWidth(648);
+					// root.getScene().getWindow().setWidth(root.getScene().getWindow().getWidth()
+					// - 700);
+				}
+			}
+		});
+		
+		toggleswitch1.setSelected(true);
 
+	}
+
+	public int rowsPerPage() {
+		return 24;
 	}
 
 	private void setFirstDay() {
@@ -397,8 +440,8 @@ public class MainAppController implements Initializable {
 
 	public void updateActivityDetails() {
 
-		ArrayList<Activity> activits = ActivityManager.getAllRows();
-		ObservableList<Activity> activityList = FXCollections.observableArrayList(activits);
+		activities = ActivityManager.getAllRows();
+		ObservableList<Activity> activityList = FXCollections.observableArrayList(activities);
 		tvActivityDetails.setItems(activityList);
 		tvActivityDetails.getColumns().clear();
 
@@ -438,6 +481,81 @@ public class MainAppController implements Initializable {
 		tvActivityDetails.getColumns().add(categoryName);
 		tvActivityDetails.getColumns().add(description);
 
+		pagination.setPageCount(activities.size() / rowsPerPage() + 1);
+		// pagination.setStyle("-fx-border-color:red;");
+		pagination.setPageFactory(new Callback<Integer, Node>() {
+			@Override
+			public Node call(Integer pageIndex) {
+				if (pageIndex > activities.size() / rowsPerPage() + 1) {
+					return null;
+				} else {
+					return createPage(pageIndex);
+				}
+			}
+		});
+
+	}
+
+	public VBox createPage(int pageIndex) {
+		int lastIndex = 0;
+		int displace = activities.size() % rowsPerPage();
+		if (displace > 0) {
+			lastIndex = activities.size() / rowsPerPage();
+		} else {
+			lastIndex = activities.size() / rowsPerPage() - 1;
+
+		}
+
+		VBox box = new VBox(5);
+		int page = pageIndex * itemsPerPage();
+
+		for (int i = page; i < page + itemsPerPage(); i++) {
+			TableView<Activity> table = new TableView<Activity>();
+
+			TableColumn<Activity, String> id = new TableColumn<>("ID");
+			id.setCellValueFactory(new PropertyValueFactory<>("id"));
+			id.prefWidthProperty().bind(pagination.widthProperty().multiply(0.066));
+
+			TableColumn<Activity, String> date = new TableColumn<>("Date");
+			date.setCellValueFactory(new PropertyValueFactory<>("date"));
+			date.prefWidthProperty().bind(pagination.widthProperty().multiply(0.12));
+
+			TableColumn<Activity, String> dayOfWeekEnumValue = new TableColumn<>("Day Of Week");
+			dayOfWeekEnumValue.setCellValueFactory(new PropertyValueFactory<>("dayOfWeekEnumValue"));
+			dayOfWeekEnumValue.prefWidthProperty().bind(pagination.widthProperty().multiply(0.14));
+
+			TableColumn<Activity, String> day = new TableColumn<>("Day");
+			day.setCellValueFactory(new PropertyValueFactory<>("day"));
+			day.prefWidthProperty().bind(pagination.widthProperty().multiply(0.07));
+
+			TableColumn<Activity, String> hours = new TableColumn<>("Hours");
+			hours.setCellValueFactory(new PropertyValueFactory<>("hours"));
+			hours.prefWidthProperty().bind(pagination.widthProperty().multiply(0.07));
+
+			TableColumn<Activity, String> categoryName = new TableColumn<>("Category");
+			categoryName.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+			categoryName.prefWidthProperty().bind(pagination.widthProperty().multiply(0.13));
+
+			TableColumn<Activity, String> description = new TableColumn<>("Description");
+			description.setCellValueFactory(new PropertyValueFactory<>("description"));
+			description.prefWidthProperty().bind(pagination.widthProperty().multiply(0.4));
+
+			table.getColumns().addAll(id, date, dayOfWeekEnumValue, day, hours, categoryName, description);
+			if (lastIndex == pageIndex) {
+				table.setItems(FXCollections.observableArrayList(
+						activities.subList(pageIndex * rowsPerPage(), pageIndex * rowsPerPage() + displace)));
+			} else {
+				table.setItems(FXCollections.observableArrayList(
+						activities.subList(pageIndex * rowsPerPage(), pageIndex * rowsPerPage() + rowsPerPage())));
+			}
+			table.setPrefHeight(600);
+			box.getChildren().add(table);
+		}
+		return box;
+	}
+
+	public int itemsPerPage() {
+		return 1;
 	}
 
 	@FXML
@@ -497,6 +615,8 @@ public class MainAppController implements Initializable {
 			dialogStage.initStyle(StageStyle.TRANSPARENT);
 			Scene scene = new Scene(page, 320, 320, Color.TRANSPARENT);
 			dialogStage.setScene(scene);
+			dialogStage.setX(root.getScene().getWindow().getX() + root.getScene().getWindow().getWidth() / 2 - 160);
+			dialogStage.setY(root.getScene().getWindow().getY() + root.getScene().getWindow().getHeight() / 2 - 160);
 
 			// Set the person into the controller.
 			StopwatchController controller = loader.getController();
