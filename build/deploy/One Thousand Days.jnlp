@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="One Thousand Days.jnlp">
+  <information>
+    <title>One Thousand Days</title>
+    <vendor>Yuelin</vendor>
+    <description>One Thousand Days</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="OneThousandDays.jar" size="99714" download="eager" />
+    <jar href="libs/controlsfx-8.40.12.jar" size="996389" download="eager" />
+    <jar href="libs/log4j-api-2.7.jar" size="219001" download="eager" />
+    <jar href="libs/log4j-core-2.7.jar" size="1296865" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="0" height="0" main-class="com.yuelin.onethousanddays.GUIOneThousandDays"  name="One Thousand Days" />
+  <update check="background"/>
+</jnlp>
