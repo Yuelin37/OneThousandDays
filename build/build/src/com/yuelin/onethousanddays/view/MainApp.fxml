@@ -20,7 +20,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -29,7 +28,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<VBox fx:id="root" prefHeight="800.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.view.MainAppController">
+<VBox fx:id="root" prefHeight="800.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yuelin.onethousanddays.view.MainAppController">
 	<children>
 		<MenuBar VBox.vgrow="NEVER">
 			<menus>
@@ -76,7 +75,7 @@
       			<children>
                   <HBox layoutX="15.0" layoutY="14.0" prefHeight="100.0" prefWidth="618.0" spacing="15.0">
                      <children>
-                        <Label fx:id="lblDay" alignment="CENTER" focusTraversable="false" onMouseClicked="#updateRandomQuote" prefHeight="100.0" prefWidth="123.0" style="-fx-border-width: 3; -fx-border-style: solid; -fx-border-color: grey; -fx-border-radius: 5;" text="100" textFill="#0bbf23">
+                        <Label fx:id="lblDay" alignment="CENTER" focusTraversable="false" onMouseClicked="#updateRandomQuote" prefHeight="100.0" prefWidth="187.0" style="-fx-border-width: 3; -fx-border-style: solid; -fx-border-color: grey; -fx-border-radius: 5;" text="100" textFill="#0bbf23">
                            <font>
                               <Font name="Open 24 Display St" size="72.0" />
                            </font>
@@ -84,11 +83,14 @@
                               <Glow />
                            </effect>
                         </Label>
-                        <StackPane prefHeight="100.0" prefWidth="107.0">
+                        <StackPane>
                            <children>
-                              <ProgressBar fx:id="progressBar" layoutX="471.0" layoutY="101.0" prefHeight="100.0" prefWidth="101.0" progress="0.0" rotate="-90.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-                              <Label fx:id="lblPercentage" focusTraversable="false" text="Label" StackPane.alignment="CENTER" />
+                              <ProgressBar fx:id="progressBar" layoutX="471.0" layoutY="101.0" prefHeight="64.0" prefWidth="140.0" progress="0.0" rotate="-90.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                              <Label fx:id="lblPercentage" focusTraversable="false" prefHeight="17.0" prefWidth="40.0" text="Label" StackPane.alignment="CENTER" />
                            </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </StackPane>
                         <TableView fx:id="tvActivitySummary" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="287.0">
                           <columns>
@@ -101,7 +103,6 @@
                         </TableView>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <ToggleButton fx:id="toggleswitch1" mnemonicParsing="false" text="Activities" />
                               <ToggleSwitch fx:id="toggleswitch" maxWidth="-Infinity" prefHeight="20.0" prefWidth="28.0" />
                            </children></VBox>
                      </children>

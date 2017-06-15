@@ -147,8 +147,8 @@ public class MainAppController implements Initializable {
 	@FXML
 	private StackPane stopwatchPane;
 
-	@FXML
-	private ToggleButton toggleswitch1;
+//	@FXML
+//	private ToggleButton toggleswitch1;
 	
 	@FXML
 	private ToggleSwitch toggleswitch;
@@ -303,7 +303,7 @@ public class MainAppController implements Initializable {
 			}
 		});
 		
-		toggleswitch1.setSelected(true);
+//		toggleswitch1.setSelected(true);
 
 	}
 

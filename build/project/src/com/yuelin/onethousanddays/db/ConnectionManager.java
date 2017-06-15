@@ -10,8 +10,8 @@ public class ConnectionManager {
 	private final String USERNAME = "dbuser";
 	private final String PASSWORD = "dbpassword";
 	private final String H_CONN_STRING = "jdbc:hsqldb:data/onethousanddays";
-	private final String M_CONN_STRING = "jdbc:mysql://localhost/onethousanddays?useUnicode=true&characterEncoding=utf-8";
-	private final String M_DEV_CONN_STRING = "jdbc:mysql://localhost/onethousanddays_dev?useUnicode=true&characterEncoding=utf-8";
+	private final String M_CONN_STRING = "jdbc:mysql://localhost:3307/onethousanddays?useUnicode=true&characterEncoding=utf-8";
+	private final String M_DEV_CONN_STRING = "jdbc:mysql://localhost:3307/onethousanddays_dev?useUnicode=true&characterEncoding=utf-8";
 
 	private DBType dbType = DBType.MYSQL;
 	private boolean devDB = false;

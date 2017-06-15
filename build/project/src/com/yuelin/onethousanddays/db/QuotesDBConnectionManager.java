@@ -10,8 +10,8 @@ public class QuotesDBConnectionManager {
 	private final String USERNAME = "dbuser";
 	private final String PASSWORD = "dbpassword";
 	private final String H_CONN_STRING = "jdbc:hsqldb:data/wordpress";
-	private final String M_CONN_STRING = "jdbc:mysql://localhost/wordpress?useUnicode=true&characterEncoding=utf-8";
-	private final String M_DEV_CONN_STRING = "jdbc:mysql://localhost/wordpress?useUnicode=true&characterEncoding=utf-8";
+	private final String M_CONN_STRING = "jdbc:mysql://localhost:3307/wordpress?useUnicode=true&characterEncoding=utf-8";
+	private final String M_DEV_CONN_STRING = "jdbc:mysql://localhost:3307/wordpress?useUnicode=true&characterEncoding=utf-8";
 
 	private DBType dbType = DBType.MYSQL;
 	private boolean devDB = false;
