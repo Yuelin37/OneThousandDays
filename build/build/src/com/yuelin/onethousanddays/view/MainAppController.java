@@ -441,6 +441,8 @@ public class MainAppController implements Initializable {
 	public void updateActivityDetails() {
 
 		activities = ActivityManager.getAllRows();
+		if (activities.size() == 0)
+			return;
 		ObservableList<Activity> activityList = FXCollections.observableArrayList(activities);
 		tvActivityDetails.setItems(activityList);
 		tvActivityDetails.getColumns().clear();
